@@ -25,14 +25,8 @@ interface BlogEntry {
   gradient: string;
 }
 
-// Correct interface for Next.js page component
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
 
-export default function BlogPost({ params }: PageProps) {
+export default function BlogPost({ params }: { params: { slug: string } }) {
   // Convert slug to blogId (you might want to use the slug directly or map it)
   const blogId = parseInt(params.slug) || 1;
 
