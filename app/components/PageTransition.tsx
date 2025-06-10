@@ -1,51 +1,47 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { ReactNode, useRef } from "react";
+import { motion } from "framer-motion";
+import { ReactNode } from "react";
 
-type Props = {
+interface PageTransitionProps {
   children: ReactNode;
+}
+
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    y: 20,
+    scale: 0.98,
+  },
+  in: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+  },
+  out: {
+    opacity: 0,
+    y: -20,
+    scale: 1.02,
+  },
 };
 
-export default function PageTransition({ children }: Props) {
-  const pathname = usePathname();
-  const prevPath = useRef(pathname);
+const pageTransition = {
+  type: "tween",
+  ease: "anticipate",
+  duration: 0.4,
+};
 
-  // Determine direction: forward (1) or backward (-1)
-  const direction = pathname > prevPath.current ? 1 : -1;
-  prevPath.current = pathname;
-
-  const variants = {
-    initial: (direction: number) => ({
-      x: direction > 0 ? 300 : -300,
-      opacity: 0,
-    }),
-    animate: {
-      x: 0,
-      opacity: 1,
-      transition: { duration: 0.4, ease: "easeOut" },
-    },
-    exit: (direction: number) => ({
-      x: direction < 0 ? 300 : -300,
-      opacity: 0,
-      transition: { duration: 0.4, ease: "easeIn" },
-    }),
-  };
-
+export default function PageTransition({ children }: PageTransitionProps) {
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={pathname}
-        custom={direction}
-        variants={variants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        className="w-full"
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <motion.div
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      transition={pageTransition}
+      className="min-h-screen"
+    >
+      {children}
+    </motion.div>
   );
 }
