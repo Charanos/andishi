@@ -1,7 +1,8 @@
 module.exports = {
   content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './styles/**/*.{css}',
   ],
   theme: {
     extend: {
@@ -19,6 +20,7 @@ module.exports = {
       },
     },
   },
+  darkMode: 'class', 
   plugins: [
     require("@tailwindcss/forms"),
     require('@tailwindcss/typography'),

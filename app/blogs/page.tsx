@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import Link from "next/link";
 import { FaCalendarAlt, FaUser, FaArrowRight, FaClock } from "react-icons/fa";
 
 export default function BlogsSection() {
@@ -12,7 +15,7 @@ export default function BlogsSection() {
       date: "June 8, 2025",
       readTime: "5 min read",
       category: "AI & Hiring",
-      image: "/blog1.jpg", // Placeholder
+      image: "/blog1.jpg",
       gradient: "from-blue-500/20 to-cyan-500/10",
     },
     {
@@ -24,7 +27,7 @@ export default function BlogsSection() {
       date: "June 5, 2025",
       readTime: "7 min read",
       category: "Team Management",
-      image: "/blog2.jpg", // Placeholder
+      image: "/blog2.jpg",
       gradient: "from-purple-500/20 to-pink-500/10",
     },
     {
@@ -36,18 +39,16 @@ export default function BlogsSection() {
       date: "June 2, 2025",
       readTime: "6 min read",
       category: "Web3 & Blockchain",
-      image: "/blog3.jpg", // Placeholder
+      image: "/blog3.jpg",
       gradient: "from-green-500/20 to-emerald-500/10",
     },
   ];
 
   return (
     <section id="blogs" className="py-32 relative overflow-hidden">
-      {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-indigo-900/20"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Title */}
         <div className="text-center mb-12">
           <h2 className="text-3xl lg:text-4xl font-medium text-white mb-4">
             Latest <span className="text-purple-400">Insights</span>
@@ -58,29 +59,20 @@ export default function BlogsSection() {
           </p>
         </div>
 
-        {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogs.map((blog) => (
             <article
               key={blog.id}
               className="group relative overflow-hidden rounded-2xl backdrop-blur-md bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-500 hover:scale-[1.02] cursor-pointer"
               style={{
-                background: `linear-gradient(135deg, 
-                  rgba(59, 130, 246, 0.03) 0%, 
-                  rgba(147, 51, 234, 0.02) 50%, 
-                  rgba(236, 72, 153, 0.03) 100%)`,
-                boxShadow: `
-                  0 8px 32px rgba(0, 0, 0, 0.2),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.05)
-                `,
+                background: `linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(147, 51, 234, 0.02) 50%, rgba(236, 72, 153, 0.03) 100%)`,
+                boxShadow: `0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)`,
               }}
             >
-              {/* Colored gradient overlay */}
               <div
                 className={`absolute inset-0 bg-gradient-to-br ${blog.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
               ></div>
 
-              {/* Image Placeholder */}
               <div className="relative h-48 bg-gradient-to-br from-gray-700 to-gray-800 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-4 left-4">
@@ -90,9 +82,7 @@ export default function BlogsSection() {
                 </div>
               </div>
 
-              {/* Content */}
               <div className="relative p-6 space-y-4">
-                {/* Meta Info */}
                 <div className="flex items-center justify-between text-sm text-gray-400">
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center space-x-1">
@@ -110,26 +100,25 @@ export default function BlogsSection() {
                   </div>
                 </div>
 
-                {/* Title */}
                 <h3 className="text-xl font-semibold text-white group-hover:text-blue-300 transition-colors duration-300 line-clamp-2">
                   {blog.title}
                 </h3>
 
-                {/* Excerpt */}
                 <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300 leading-relaxed line-clamp-3">
                   {blog.excerpt}
                 </p>
 
-                {/* Read More */}
                 <div className="flex items-center justify-between pt-4">
-                  <button className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors duration-300 group/btn">
+                  <Link
+                    href={`/blogs/${blog.id}`}
+                    className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors duration-300"
+                  >
                     <span className="text-sm font-medium">Read More</span>
-                    <FaArrowRight className="text-xs group-hover/btn:translate-x-1 transition-transform duration-300" />
-                  </button>
+                    <FaArrowRight className="text-xs transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
                 </div>
               </div>
 
-              {/* Floating particles */}
               <div className="absolute top-4 right-4 w-2 h-2 bg-blue-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-pulse transition-opacity duration-500"></div>
               <div
                 className="absolute bottom-6 right-6 w-1 h-1 bg-purple-400/30 rounded-full opacity-0 group-hover:opacity-100 animate-pulse transition-opacity duration-500"
@@ -139,18 +128,17 @@ export default function BlogsSection() {
           ))}
         </div>
 
-        {/* View All Button */}
         <div className="text-center mt-12">
-          <button className="group px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-full hover:from-blue-600 hover:to-purple-600 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25">
-            <span className="flex items-center space-x-2">
-              <span>View All Articles</span>
-              <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform duration-300" />
-            </span>
-          </button>
+          <Link
+            href="/blogs"
+            className="group inline-flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-full hover:from-blue-600 hover:to-purple-600 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
+          >
+            <span>View All Articles</span>
+            <FaArrowRight className="text-sm transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
 
-      {/* Ambient background effects */}
       <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/8 rounded-full blur-3xl animate-pulse"></div>
       <div
         className="absolute bottom-20 right-10 w-40 h-40 bg-purple-500/8 rounded-full blur-3xl animate-pulse"
