@@ -2,8 +2,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
-import ScrollToTop from "./components/ScrollToTop";
 import { Nunito, Montserrat } from "next/font/google";
+import ScrollToTop from "./components/ScrollToTop";
+import PageTransition from "./components/PageTransition";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -38,11 +39,14 @@ export default function RootLayout({
       <body className="relative font-sans antialiased text-white bg-dark">
         <div className="pointer-events-none fixed inset-0 -z-10 bg-[url('/bg-gradient-overlay.svg')] bg-center bg-cover opacity-75" />
 
-        {/* Smooth scroll on route change */}
         <ScrollToTop />
-
         <Navbar />
-        <main className="pt-16">{children}</main>
+
+        {/* Smooth transition wrapper */}
+        <main className="pt-16">
+          <PageTransition>{children}</PageTransition>
+        </main>
+
         <Footer />
       </body>
     </html>
