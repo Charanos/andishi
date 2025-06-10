@@ -1,33 +1,66 @@
 import "./globals.css";
+import { useEffect } from "react";
 import type { Metadata } from "next";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
+import { usePathname } from "next/navigation";
 import { Nunito, Montserrat } from "next/font/google";
+import { AnimatePresence, motion } from "framer-motion";
 
-// Optimized font loading with subsets and display swap
+// Fonts
 const nunito = Nunito({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-nunito", // Matches var name in Tailwind config
+  variable: "--font-nunito",
   weight: ["400", "500", "700"],
 });
 
 const montserrat = Montserrat({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-montserrat", // Matches var name in Tailwind config
+  variable: "--font-montserrat",
   weight: ["500", "600", "700"],
 });
 
+// Metadata
 export const metadata: Metadata = {
   title: "Andishi",
   description: "Democratizing Tech Talent for Everyone",
-  // Optional: Add metadata for your fonts
   other: {
     "font-subset": "latin",
     "font-display": "swap",
   },
 };
+
+// ScrollToTop component
+function ScrollToTop() {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+
+  return null;
+}
+
+// Client-side wrapper for animations
+function PageTransitionWrapper({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={pathname}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.3 }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -36,8 +69,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${nunito.variable} ${montserrat.variable}`}>
-      <body className="relative font-sans antialiased text-white bg-dark">
-        {/* Full-screen SVG overlay from public/bg-gradient-overlay.svg */}
+      <body className="relative font-sans antialiased text-white bg-dark scroll-smooth">
+        {/* Background overlay */}
         <div
           className="
             pointer-events-none
@@ -48,12 +81,11 @@ export default function RootLayout({
           "
         />
 
+        <ScrollToTop />
         <Navbar />
 
         <main className="pt-16">
-          {" "}
-          {/* add top padding equal to navbar height */}
-          {children}
+          <PageTransitionWrapper>{children}</PageTransitionWrapper>
         </main>
 
         <Footer />
