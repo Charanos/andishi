@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import { FaCalendarAlt, FaUser, FaArrowRight, FaClock } from "react-icons/fa";
@@ -110,7 +108,7 @@ export default function BlogsSection() {
 
                 <div className="flex items-center justify-between pt-4">
                   <Link
-                    href={`/blogs/${blog.id}`}
+                    href="#"
                     className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors duration-300"
                   >
                     <span className="text-sm font-medium">Read More</span>
