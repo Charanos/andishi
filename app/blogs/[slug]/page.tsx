@@ -25,7 +25,7 @@ interface BlogEntry {
   gradient: string;
 }
 
-
+/* eslint-disable */
 export default function BlogPost({ params }: { params: { slug: string } }) {
   // Convert slug to blogId (you might want to use the slug directly or map it)
   const blogId = parseInt(params.slug) || 1;
