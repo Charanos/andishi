@@ -25,7 +25,17 @@ interface BlogEntry {
   gradient: string;
 }
 
-export default function BlogPost({ blogId = 1 }: { blogId?: number }) {
+// Correct interface for Next.js page component
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default function BlogPost({ params }: PageProps) {
+  // Convert slug to blogId (you might want to use the slug directly or map it)
+  const blogId = parseInt(params.slug) || 1;
+
   // Mock blog data - in real app, this would come from props or API
   const blogData: Record<number, BlogEntry> = {
     1: {
