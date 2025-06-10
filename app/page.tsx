@@ -31,11 +31,6 @@ export default function HomePage() {
       <ProjectsShowcase />
 
       <Newsletter />
-
-      <article className="prose">
-        <h1>This should be big and serif</h1>
-        <p>Your paragraph should have generous line-height and margins.</p>
-      </article>
     </main>
   );
 }
