@@ -73,178 +73,35 @@ interface ProjectData {
   priority: "low" | "medium" | "high" | "critical";
 }
 
-// Mock data for demonstration
-const mockProjects: ProjectData[] = [
-  {
-    _id: "1",
-    userInfo: {
-      firstName: "John",
-      lastName: "Doe",
-      email: "john.doe@example.com",
-      phone: "+254 712 345 678",
-      company: "Tech Innovations Ltd",
-      role: "CEO/Founder",
-    },
-    projectDetails: {
-      title: "E-commerce Mobile App",
-      description:
-        "A comprehensive e-commerce mobile application with payment integration, user authentication, and real-time inventory management.",
-      category: "Mobile Application",
-      timeline: "3-6 months",
-      urgency: "High - ASAP",
-      techStack: [
-        "React Native",
-        "Node.js/Express",
-        "Payment Gateway Integration",
-        "API Development",
-      ],
-      requirements:
-        "Must support both iOS and Android, integrate with existing inventory system",
-    },
-    pricing: {
-      type: "milestone",
-      currency: "USD",
-      milestones: [
-        {
-          id: "m1",
-          title: "UI/UX Design & Wireframes",
-          description: "Complete app design and user flow",
-          budget: "5000",
-          timeline: "2 weeks",
-        },
-        {
-          id: "m2",
-          title: "Backend API Development",
-          description: "RESTful API with authentication",
-          budget: "8000",
-          timeline: "4 weeks",
-        },
-      ],
-    },
-    status: "pending",
-    submittedAt: "2024-06-10T10:30:00Z",
-    priority: "high",
-  },
-  {
-    _id: "2",
-    userInfo: {
-      firstName: "Sarah",
-      lastName: "Johnson",
-      email: "sarah.johnson@biztech.com",
-      phone: "+254 722 987 654",
-      company: "BizTech Solutions",
-      role: "Product Manager",
-    },
-    projectDetails: {
-      title: "SaaS Dashboard Platform",
-      description:
-        "A comprehensive dashboard for business analytics with real-time data visualization, user management, and reporting features.",
-      category: "SaaS Platform",
-      timeline: "6+ months",
-      urgency: "Medium - Standard timeline",
-      techStack: [
-        "React/Next.js",
-        "Node.js/Express",
-        "Data Analytics",
-        "UI/UX Design",
-      ],
-      requirements:
-        "Multi-tenant architecture, real-time updates, custom branding options",
-    },
-    pricing: {
-      type: "fixed",
-      currency: "USD",
-      fixedBudget: "25000",
-    },
-    status: "reviewed",
-    submittedAt: "2024-06-09T14:15:00Z",
-    priority: "medium",
-  },
-  {
-    _id: "3",
-    userInfo: {
-      firstName: "Michael",
-      lastName: "Chen",
-      email: "m.chen@startupx.io",
-      phone: "+254 733 456 789",
-      company: "StartupX",
-      role: "CTO",
-    },
-    projectDetails: {
-      title: "AI-Powered Content Generator",
-      description:
-        "An AI-powered platform for generating marketing content, blog posts, and social media content with custom brand voice training.",
-      category: "AI/ML Solution",
-      timeline: "3-6 months",
-      urgency: "Critical - Emergency",
-      techStack: [
-        "AI/Machine Learning",
-        "Python/Django",
-        "API Development",
-        "React/Next.js",
-      ],
-      requirements:
-        "Custom AI model training, API rate limiting, user subscription management",
-    },
-    pricing: {
-      type: "hourly",
-      currency: "USD",
-      hourlyRate: "85",
-      estimatedHours: "40",
-    },
-    status: "approved",
-    submittedAt: "2024-06-08T09:45:00Z",
-    priority: "critical",
-  },
-  {
-    _id: "4",
-    userInfo: {
-      firstName: "Emily",
-      lastName: "Rodriguez",
-      email: "emily.r@healthtech.com",
-      phone: "+254 744 123 456",
-      company: "HealthTech Innovations",
-      role: "Project Manager",
-    },
-    projectDetails: {
-      title: "Telemedicine Platform",
-      description:
-        "A secure telemedicine platform with video consultations, patient records management, and prescription handling.",
-      category: "Healthcare Solution",
-      timeline: "6+ months",
-      urgency: "High - ASAP",
-      techStack: [
-        "React/Next.js",
-        "Node.js/Express",
-        "Security Implementation",
-        "Third-party Integrations",
-      ],
-      requirements:
-        "HIPAA compliance, end-to-end encryption, integration with existing EMR systems",
-    },
-    pricing: {
-      type: "milestone",
-      currency: "USD",
-      milestones: [
-        {
-          id: "m1",
-          title: "Security & Compliance Setup",
-          description: "HIPAA compliance and security implementation",
-          budget: "12000",
-          timeline: "3 weeks",
-        },
-      ],
-    },
-    status: "pending",
-    submittedAt: "2024-06-07T16:20:00Z",
-    priority: "high",
-  },
-];
+// Fetch projects from the API
 
 export default function AdminDashboard() {
-  const [projects, setProjects] = useState<ProjectData[]>(mockProjects);
-  const [filteredProjects, setFilteredProjects] =
-    useState<ProjectData[]>(mockProjects);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [filteredProjects, setFilteredProjects] = useState<ProjectData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch("/api/start-project");
+        const data = await res.json();
+        if (data.success) {
+          setProjects(data.projects);
+          setFilteredProjects(data.projects);
+        } else {
+          setError(data.message || "Failed to fetch projects");
+        }
+      } catch (err) {
+        setError("Failed to fetch projects");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(
     null
   );
@@ -256,28 +113,46 @@ export default function AdminDashboard() {
   const [showFilters, setShowFilters] = useState(false);
 
   // Status update functions
-  const updateProjectStatus = (
+  const updateProjectStatus = async (
     projectId: string,
     newStatus: "pending" | "reviewed" | "approved" | "rejected"
   ) => {
-    setProjects((prevProjects) =>
-      prevProjects.map((project) =>
+    // Optimistically update local state
+    const prevProjects = [...projects];
+    setProjects((prev) =>
+      prev.map((project) =>
         project._id === projectId ? { ...project, status: newStatus } : project
       )
     );
 
-    // Close modal
-    setSelectedProject(null);
-
-    // Show success toast
-    const statusMessages = {
-      approved: "Project approved successfully! 🎉",
-      reviewed: "Project marked as reviewed 👍",
-      rejected: "Project rejected ❌",
-      pending: "Project status updated ⏳",
-    };
-
-    toast.success(statusMessages[newStatus]);
+    try {
+      const res = await fetch("/api/start-project", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ _id: projectId, status: newStatus }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.message || "Failed to update status");
+      }
+      // Show success toast
+      const statusMessages = {
+        approved: "Project approved successfully! 🎉",
+        reviewed: "Project marked as reviewed 👍",
+        rejected: "Project rejected ❌",
+        pending: "Project status updated ⏳",
+      };
+      toast.success(statusMessages[newStatus]);
+    } catch (error: any) {
+      // Revert local state on error
+      setProjects(prevProjects);
+      toast.error(
+        error?.message || "Failed to update project status. Please try again."
+      );
+    } finally {
+      // Close modal
+      setSelectedProject(null);
+    }
   };
 
   // Individual button functions
@@ -363,19 +238,37 @@ export default function AdminDashboard() {
   const handleEditProject = (project: ProjectData) => {
     // For demo purposes, just show that edit was clicked
     toast.info(
-      `Edit mode for "${project.projectDetails.title}" - Feature coming soon! ✏️`
+      `Edit mode for "${project.projectDetails.title}" - Feature coming soon! `
     );
   };
 
-  const handleDeleteProject = (project: ProjectData) => {
+  const handleDeleteProject = async (project: ProjectData) => {
     const confirmed = window.confirm(
       `Are you sure you want to delete "${project.projectDetails.title}"?`
     );
-    if (confirmed) {
-      setProjects((prevProjects) =>
-        prevProjects.filter((p) => p._id !== project._id)
+    if (!confirmed) return;
+
+    // Optimistically update local state
+    const prevProjects = [...projects];
+    setProjects((prev) => prev.filter((p) => p._id !== project._id));
+
+    try {
+      const res = await fetch("/api/start-project", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ _id: project._id }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.message || "Failed to delete project");
+      }
+      toast.success("Project deleted successfully! ");
+    } catch (error: any) {
+      // Revert local state on error
+      setProjects(prevProjects);
+      toast.error(
+        error?.message || "Failed to delete project. Please try again."
       );
-      toast.success("Project deleted successfully! 🗑️");
     }
   };
 
@@ -535,7 +428,7 @@ export default function AdminDashboard() {
 
   return (
     <>
-      <section className="min-h-screen py-8 relative overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20">
+      <section className="min-h-screen py-16 relative overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-purple-900/10 to-indigo-900/10"></div>
         <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/8 rounded-full blur-3xl animate-pulse"></div>
@@ -548,7 +441,7 @@ export default function AdminDashboard() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl lg:text-4xl font-medium text-white mb-4">
-              Project <span className="text-purple-400">Dashboard</span>
+              Projects <span className="text-purple-400">Dashboard</span>
             </h1>
             <p className="text-lg text-gray-300">
               Manage and review client project submissions
@@ -591,8 +484,10 @@ export default function AdminDashboard() {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-400 text-sm">{stat.label}</p>
-                    <p className="text-2xl font-semibold text-white mt-1">
+                    <p className="text-gray-400 text-sm monty uppercase">
+                      {stat.label}
+                    </p>
+                    <p className="text-2xl font-semibold text-white mt-1 monty">
                       {stat.value}
                     </p>
                   </div>
@@ -766,12 +661,10 @@ export default function AdminDashboard() {
                   <div className="flex items-center space-x-2">
                     {getStatusIcon(project.status)}
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium border ${getPriorityColor(
+                      className={`px-2 py-1 rounded-full text-sm font-medium border monty uppercase ${getPriorityColor(
                         project.priority
                       )}`}
-                    >
-                      {project.priority.toUpperCase()}
-                    </span>
+                    ></span>
                   </div>
                 </div>
 
@@ -801,13 +694,13 @@ export default function AdminDashboard() {
                       .map((tech) => (
                         <span
                           key={tech}
-                          className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs"
+                          className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-sm"
                         >
                           {tech}
                         </span>
                       ))}
                     {project.projectDetails.techStack.length > 3 && (
-                      <span className="px-2 py-1 bg-gray-500/20 text-gray-300 rounded text-xs">
+                      <span className="px-2 py-1 bg-gray-500/20 text-gray-300 rounded text-sm">
                         +{project.projectDetails.techStack.length - 3} more
                       </span>
                     )}
@@ -816,7 +709,7 @@ export default function AdminDashboard() {
 
                 {/* Footer */}
                 <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                  <span className="text-xs text-gray-400">
+                  <span className="text-sm text-gray-400">
                     {formatDate(project.submittedAt)}
                   </span>
                   <div className="flex items-center space-x-2">
@@ -827,7 +720,7 @@ export default function AdminDashboard() {
                       }}
                       className="p-2 text-gray-400 hover:text-blue-400 transition-colors cursor-pointer"
                     >
-                      <FaEye className="text-xs" />
+                      <FaEye className="text-sm" />
                     </button>
                     <button
                       onClick={(e) => {
@@ -836,7 +729,7 @@ export default function AdminDashboard() {
                       }}
                       className="p-2 text-gray-400 hover:text-green-400 transition-colors cursor-pointer"
                     >
-                      <FaEdit className="text-xs" />
+                      <FaEdit className="text-sm" />
                     </button>
                     <button
                       onClick={(e) => {
@@ -845,7 +738,7 @@ export default function AdminDashboard() {
                       }}
                       className="p-2 text-gray-400 hover:text-red-400 transition-colors cursor-pointer"
                     >
-                      <FaTrash className="text-xs" />
+                      <FaTrash className="text-sm" />
                     </button>
                   </div>
                 </div>
@@ -880,12 +773,10 @@ export default function AdminDashboard() {
                     </h2>
                     <div className="flex items-center space-x-4">
                       <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium border ${getPriorityColor(
+                        className={`px-3 py-1 rounded-full text-sm font-medium border monty uppercase ${getPriorityColor(
                           selectedProject.priority
                         )}`}
-                      >
-                        {selectedProject.priority.toUpperCase()} PRIORITY
-                      </span>
+                      ></span>
                       <div className="flex items-center space-x-2 text-gray-300">
                         {getStatusIcon(selectedProject.status)}
                         <span className="capitalize">
@@ -1114,7 +1005,7 @@ export default function AdminDashboard() {
                                   <p className="text-gray-300 text-sm mb-2">
                                     {milestone.description}
                                   </p>
-                                  <div className="flex items-center text-xs text-gray-400">
+                                  <div className="flex items-center text-sm text-gray-400">
                                     <FaClock className="mr-1" />
                                     {milestone.timeline}
                                   </div>
