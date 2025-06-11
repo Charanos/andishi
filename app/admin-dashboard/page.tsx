@@ -831,10 +831,12 @@ export default function AdminDashboard() {
                     {/* display priority and status */}
                     <div className="flex items-center space-x-4">
                       <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium border monty uppercase ${getPriorityColor(
+                        className={`px-3 py-1 rounded-full text-xs font-medium border monty uppercase ${getPriorityColor(
                           selectedProject.priority
                         )}`}
-                      ></span>
+                      >
+                        {selectedProject.priority}
+                      </span>
                       <div className="flex items-center space-x-2 text-gray-300">
                         {getStatusIcon(selectedProject.status)}
                         <span className="capitalize">
@@ -857,7 +859,7 @@ export default function AdminDashboard() {
                 <div className="space-y-6">
                   {/* Client Information */}
                   <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center monty uppercase">
                       <FaUser className="mr-2 text-blue-400" />
                       Client Information
                     </h3>
@@ -898,7 +900,7 @@ export default function AdminDashboard() {
 
                   {/* Project Details */}
                   <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center monty uppercase">
                       <FaProjectDiagram className="mr-2 text-blue-400" />
                       Project Details
                     </h3>
@@ -967,7 +969,7 @@ export default function AdminDashboard() {
 
                   {/* Pricing Information */}
                   <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center monty uppercase">
                       <FaDollarSign className="mr-2 text-green-400" />
                       Pricing Information
                     </h3>
@@ -1095,7 +1097,7 @@ export default function AdminDashboard() {
 
                   {/* Submission Info */}
                   <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center monty uppercase">
                       <FaCalendarAlt className="mr-2 text-purple-400" />
                       Submission Information
                     </h3>
