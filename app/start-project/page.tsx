@@ -17,10 +17,12 @@ import {
   FaArrowRight,
   FaCalendarAlt,
   FaProjectDiagram,
+  FaTimes,
 } from "react-icons/fa";
 import { startProjectFormSchema } from "@/lib/formSchema";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 interface UserInfo {
   firstName: string;

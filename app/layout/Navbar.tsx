@@ -125,6 +125,7 @@ export default function Navbar() {
               Why Andishi
             </button>
           </motion.li>
+
           <motion.li whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <button
               onClick={() => handleNavClick("#services")}
@@ -147,6 +148,20 @@ export default function Navbar() {
               className="hover:text-[#02A4E6] transition-colors duration-150 cursor-pointer uppercase"
             >
               Projects
+            </button>
+          </motion.li>
+
+          <motion.li whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <button
+              onClick={() => handleNavClick("#why")}
+              className="hover:text-[#02A4E6] transition-colors duration-150 cursor-pointer uppercase"
+            >
+              <Link
+                href={"/admin-dashboard"}
+                className="hover:text-[#02A4E6] transition-colors duration-150 cursor-pointer uppercase"
+              >
+                dashboard
+              </Link>
             </button>
           </motion.li>
 
