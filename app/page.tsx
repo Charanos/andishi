@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import BlogsSection from "./blogs/page";
 import Services from "./sections/Services";
@@ -11,30 +10,12 @@ import HeroSection from "./sections/HeroSection";
 import ClientReviews from "./sections/ClientReviews";
 import ProjectsShowcase from "./sections/ProjectsShowcase";
 
-// Animation variants for sections
 const sectionVariants = {
-  hidden: {
-    opacity: 0,
-    y: 50,
-  },
+  hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.1,
-    },
+    transition: { duration: 0.6, ease: "easeOut" },
   },
 };
 
@@ -42,11 +23,10 @@ export default function HomePage() {
   return (
     <motion.main
       className="overflow-x-hidden"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
     >
-      {/* Hero section with immediate animation */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{
@@ -58,7 +38,6 @@ export default function HomePage() {
         <HeroSection />
       </motion.div>
 
-      {/* Animated sections with scroll trigger */}
       <motion.div
         variants={sectionVariants}
         initial="hidden"
@@ -68,7 +47,9 @@ export default function HomePage() {
         <StatsSection />
       </motion.div>
 
+      {/* Add proper IDs for smooth scrolling */}
       <motion.div
+        id="why"
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
@@ -87,6 +68,7 @@ export default function HomePage() {
       </motion.div>
 
       <motion.div
+        id="services"
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
@@ -105,6 +87,7 @@ export default function HomePage() {
       </motion.div>
 
       <motion.div
+        id="blogs"
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
@@ -114,6 +97,7 @@ export default function HomePage() {
       </motion.div>
 
       <motion.div
+        id="projects"
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"

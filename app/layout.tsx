@@ -5,7 +5,7 @@ import Footer from "./layout/Footer";
 import { Nunito, Montserrat } from "next/font/google";
 import ScrollToTop from "./components/ScrollToTop";
 import PageTransition from "./components/PageTransition";
-import SmoothScrollProvider from "././components/SmoothScrollProvider";
+import ClientMotionProvider from "././components/ClientMotionProvider";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -40,7 +40,7 @@ export default function RootLayout({
       <body className="relative font-sans antialiased text-white bg-dark">
         <div className="pointer-events-none fixed inset-0 -z-10 bg-[url('/bg-gradient-overlay.svg')] bg-center bg-cover opacity-75" />
 
-        <SmoothScrollProvider>
+        <ClientMotionProvider>
           <ScrollToTop />
           <Navbar />
 
@@ -50,7 +50,7 @@ export default function RootLayout({
           </main>
 
           <Footer />
-        </SmoothScrollProvider>
+        </ClientMotionProvider>
       </body>
     </html>
   );

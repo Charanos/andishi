@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full min-h-screen overflow-hidden flex items-center">
+    <section className="relative w-full min-h-screen overflow-hidden flex items-center py-16 sm:py:0">
       {/* Background gradient layers */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/50 to-purple-900/50"></div>
       <div className="absolute inset-0 bg-gradient-to-tr from-purple-900/30 via-transparent to-blue-900/30"></div>
@@ -76,7 +76,7 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Link
               href="/start-project"
-              className="group relative px-8 py-1 flex items-center bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full font-semibold overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
+              className="group relative px-8 py-4 flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full font-semibold overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <span className="relative flex items-center justify-center space-x-2 uppercase tracking-wide">

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
   FaUser,
@@ -167,7 +168,7 @@ export default function StartProjectForm() {
   // Scroll to top function
   const scrollToTop = () => {
     window.scrollTo({
-      top: 30,
+      top: 10,
       behavior: "smooth",
     });
   };
@@ -287,7 +288,9 @@ export default function StartProjectForm() {
 
         if (result.success) {
           setSubmitStatus("success");
-          toast.success("Your project has been submitted successfully! Redirecting...");
+          toast.success(
+            "Your project has been submitted successfully! Redirecting..."
+          );
 
           // Redirect to thank you page after a short delay
           setTimeout(() => {
@@ -374,10 +377,11 @@ export default function StartProjectForm() {
             {steps.map((step) => (
               <div key={step.number} className="relative z-10">
                 <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${currentStep >= step.number
+                  className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    currentStep >= step.number
                       ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg shadow-blue-500/25"
                       : "bg-gray-700 text-gray-400"
-                    }`}
+                  }`}
                 >
                   <step.icon className="text-lg" />
                 </div>
@@ -421,7 +425,9 @@ export default function StartProjectForm() {
                     <input
                       type="text"
                       value={formData.userInfo.lastName}
-                      onChange={(e) => updateUserInfo("lastName", e.target.value)}
+                      onChange={(e) =>
+                        updateUserInfo("lastName", e.target.value)
+                      }
                       className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
                       placeholder="Enter your last name"
                     />
@@ -463,7 +469,9 @@ export default function StartProjectForm() {
                     <input
                       type="text"
                       value={formData.userInfo.company}
-                      onChange={(e) => updateUserInfo("company", e.target.value)}
+                      onChange={(e) =>
+                        updateUserInfo("company", e.target.value)
+                      }
                       className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
                       placeholder="Your company name"
                     />
@@ -560,7 +568,8 @@ export default function StartProjectForm() {
                       Tech Stack/Services Needed
                     </label>
                     <p className="text-sm text-gray-400 mb-3">
-                      Select all technologies and services you need for your project
+                      Select all technologies and services you need for your
+                      project
                     </p>
                     <div className="grid grid-cols-2 md:grid-cols-3 space-y-4 lg:grid-cols-4 gap-3 max-h-auto ">
                       {techStacks.map((tech) => (
@@ -568,10 +577,11 @@ export default function StartProjectForm() {
                           key={tech}
                           type="button"
                           onClick={() => toggleTechStack(tech)}
-                          className={`px-3 hover:bg-purple-700 cursor-pointer py-2 rounded-lg border transition-all duration-300 text-sm ${formData.projectDetails.techStack.includes(tech)
+                          className={`px-3 hover:bg-purple-700 cursor-pointer py-2 rounded-lg border transition-all duration-300 text-sm ${
+                            formData.projectDetails.techStack.includes(tech)
                               ? "bg-blue-500/20 border-blue-400 text-blue-300"
                               : "bg-white/5 border-white/10 text-gray-300 hover:border-white/20"
-                            }`}
+                          }`}
                         >
                           {tech}
                         </button>
@@ -579,7 +589,8 @@ export default function StartProjectForm() {
                     </div>
                     {formData.projectDetails.techStack.length > 0 && (
                       <div className="mt-3 text-sm text-blue-300">
-                        Selected: {formData.projectDetails.techStack.length} services
+                        Selected: {formData.projectDetails.techStack.length}{" "}
+                        services
                       </div>
                     )}
                   </div>
@@ -691,20 +702,22 @@ export default function StartProjectForm() {
                       <button
                         type="button"
                         onClick={() => updatePricing("currency", "USD")}
-                        className={`px-6 py-3 rounded-lg border transition-all duration-300 ${formData.pricing.currency === "USD"
+                        className={`px-6 py-3 rounded-lg border transition-all duration-300 ${
+                          formData.pricing.currency === "USD"
                             ? "bg-blue-500/20 border-blue-400 text-blue-300"
                             : "bg-white/5 border-white/10 text-gray-300 hover:border-white/20 monty uppercase"
-                          }`}
+                        }`}
                       >
                         USD ($)
                       </button>
                       <button
                         type="button"
                         onClick={() => updatePricing("currency", "KES")}
-                        className={`px-6 py-3 rounded-lg border transition-all duration-300 ${formData.pricing.currency === "KES"
+                        className={`px-6 py-3 rounded-lg border transition-all duration-300 ${
+                          formData.pricing.currency === "KES"
                             ? "bg-blue-500/20 border-blue-400 text-blue-300"
                             : "bg-white/5 border-white/10 text-gray-300 hover:border-white/20 monty uppercase"
-                          }`}
+                        }`}
                       >
                         KES (KSh)
                       </button>
@@ -720,10 +733,11 @@ export default function StartProjectForm() {
                       <button
                         type="button"
                         onClick={() => updatePricing("type", "fixed")}
-                        className={`p-6 rounded-xl border transition-all duration-300 text-left ${formData.pricing.type === "fixed"
+                        className={`p-6 rounded-xl border transition-all duration-300 text-left ${
+                          formData.pricing.type === "fixed"
                             ? "bg-blue-500/20 border-blue-400"
                             : "bg-white/5 border-white/10 hover:border-white/20"
-                          }`}
+                        }`}
                       >
                         <div className="text-lg font-semibold text-white mb-2 monty uppercase">
                           Fixed Price
@@ -736,10 +750,11 @@ export default function StartProjectForm() {
                       <button
                         type="button"
                         onClick={() => updatePricing("type", "milestone")}
-                        className={`p-6 rounded-xl border transition-all duration-300 text-left ${formData.pricing.type === "milestone"
+                        className={`p-6 rounded-xl border transition-all duration-300 text-left ${
+                          formData.pricing.type === "milestone"
                             ? "bg-blue-500/20 border-blue-400"
                             : "bg-white/5 border-white/10 hover:border-white/20"
-                          }`}
+                        }`}
                       >
                         <div className="text-lg font-semibold text-white mb-2 monty uppercase">
                           Milestone Based
@@ -752,10 +767,11 @@ export default function StartProjectForm() {
                       <button
                         type="button"
                         onClick={() => updatePricing("type", "hourly")}
-                        className={`p-6 rounded-xl border transition-all duration-300 text-left ${formData.pricing.type === "hourly"
+                        className={`p-6 rounded-xl border transition-all duration-300 text-left ${
+                          formData.pricing.type === "hourly"
                             ? "bg-blue-500/20 border-blue-400"
                             : "bg-white/5 border-white/10 hover:border-white/20"
-                          }`}
+                        }`}
                       >
                         <div className="text-lg font-semibold monty uppercase text-white mb-2">
                           Hourly Rate
@@ -908,8 +924,8 @@ export default function StartProjectForm() {
                         <div className="text-center py-8 text-gray-400">
                           <FaProjectDiagram className="mx-auto text-3xl mb-4 opacity-50" />
                           <p>
-                            No milestones added yet. Click "Add Milestone" to get
-                            started.
+                            No milestones added yet. Click "Add Milestone" to
+                            get started.
                           </p>
                         </div>
                       )}
@@ -1092,7 +1108,9 @@ export default function StartProjectForm() {
                         <div className="space-y-2">
                           {formData.pricing.hourlyRate && (
                             <div>
-                              <span className="text-gray-400">Hourly Rate:</span>
+                              <span className="text-gray-400">
+                                Hourly Rate:
+                              </span>
                               <span className="text-white ml-2">
                                 {formData.pricing.currency}{" "}
                                 {formData.pricing.hourlyRate}/hour
@@ -1160,9 +1178,10 @@ export default function StartProjectForm() {
                         htmlFor="terms"
                         className="text-[15.5px] text-gray-300 leading-relaxed"
                       >
-                        I agree to Andishi's terms of service and privacy policy.
-                        I understand that this is a project inquiry and final
-                        pricing will be confirmed after initial consultation.
+                        I agree to Andishi's terms of service and privacy
+                        policy. I understand that this is a project inquiry and
+                        final pricing will be confirmed after initial
+                        consultation.
                       </label>
                     </div>
                   </div>
@@ -1176,10 +1195,11 @@ export default function StartProjectForm() {
                 type="button"
                 onClick={prevStep}
                 disabled={currentStep === 1}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${currentStep === 1
+                className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${
+                  currentStep === 1
                     ? "text-gray-500 cursor-not-allowed"
                     : "text-gray-300 hover:text-white hover:bg-white/5"
-                  }`}
+                }`}
               >
                 <FaArrowLeft className="text-[15.5px" />
                 <span>Previous</span>
@@ -1194,10 +1214,11 @@ export default function StartProjectForm() {
                   type="button"
                   onClick={nextStep}
                   disabled={!isStepValid()}
-                  className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${isStepValid()
+                  className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${
+                    isStepValid()
                       ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
                       : "bg-gray-600 text-gray-400 cursor-not-allowed"
-                    }`}
+                  }`}
                 >
                   <span>Next</span>
                   <FaArrowRight className="text-[15.5px" />
