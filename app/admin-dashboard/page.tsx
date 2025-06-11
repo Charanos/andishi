@@ -69,8 +69,8 @@ interface ProjectData {
   projectDetails: ProjectDetails;
   pricing: PricingOption;
   status: "pending" | "reviewed" | "approved" | "rejected";
-  submittedAt: string;
-  priority: "low" | "medium" | "high" | "critical";
+  createdAt: string;
+  priority: "low" | "medium" | "high" | "critical"; // Keep optional for existing data
 }
 
 // Fetch projects from the API
@@ -89,8 +89,16 @@ export default function AdminDashboard() {
         const res = await fetch("/api/start-project");
         const data = await res.json();
         if (data.success) {
-          setProjects(data.projects);
-          setFilteredProjects(data.projects);
+          // Transform projects to include derived priority
+          const transformedProjects = data.projects.map((project: any) => ({
+            ...project,
+            priority:
+              project.priority ||
+              derivePriorityFromUrgency(project.projectDetails.urgency),
+          }));
+
+          setProjects(transformedProjects);
+          setFilteredProjects(transformedProjects);
         } else {
           setError(data.message || "Failed to fetch projects");
         }
@@ -102,6 +110,7 @@ export default function AdminDashboard() {
     }
     fetchProjects();
   }, []);
+
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(
     null
   );
@@ -152,6 +161,31 @@ export default function AdminDashboard() {
     } finally {
       // Close modal
       setSelectedProject(null);
+    }
+  };
+
+  const derivePriorityFromUrgency = (
+    urgency: string
+  ): "low" | "medium" | "high" | "critical" => {
+    const urgencyLower = urgency.toLowerCase();
+
+    if (
+      urgencyLower.includes("critical") ||
+      urgencyLower.includes("emergency")
+    ) {
+      return "critical";
+    } else if (
+      urgencyLower.includes("high") ||
+      urgencyLower.includes("urgent")
+    ) {
+      return "high";
+    } else if (
+      urgencyLower.includes("medium") ||
+      urgencyLower.includes("moderate")
+    ) {
+      return "medium";
+    } else {
+      return "low";
     }
   };
 
@@ -333,12 +367,12 @@ export default function AdminDashboard() {
       switch (sortBy) {
         case "date":
           comparison =
-            new Date(a.submittedAt).getTime() -
-            new Date(b.submittedAt).getTime();
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
           break;
         case "priority":
           const priorityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
-          comparison = priorityOrder[a.priority] - priorityOrder[b.priority];
+          comparison =
+            (priorityOrder[a.priority] || 0) - (priorityOrder[b.priority] || 0);
           break;
         case "budget":
           const getBudget = (project: ProjectData) => {
@@ -417,13 +451,32 @@ export default function AdminDashboard() {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+    console.log("🔍 formatDate input:", dateString, typeof dateString); // Debug line
+
+    if (!dateString || dateString === null || dateString === undefined) {
+      console.log("🔍 No date string provided"); // Debug line
+      return "No date provided";
+    }
+
+    const date = new Date(dateString);
+    console.log("🔍 Parsed date:", date); // Debug line
+
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+      console.log("🔍 Invalid date:", dateString); // Debug line
+      return `Invalid: ${dateString}`;
+    }
+
+    const formatted = date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     });
+
+    console.log("🔍 Formatted date:", formatted); // Debug line
+    return formatted;
   };
 
   return (
@@ -500,7 +553,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Filters and Search */}
-          <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-6 mb-8">
+          <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl px-6 py-2 mb-8">
             <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
               {/* Search */}
               <div className="flex-1 max-w-md">
@@ -511,7 +564,7 @@ export default function AdminDashboard() {
                     placeholder="Search projects, clients, companies..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
+                    className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
                   />
                 </div>
               </div>
@@ -519,7 +572,7 @@ export default function AdminDashboard() {
               {/* Filter Toggle */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center space-x-2 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-gray-300 hover:text-white hover:border-white/20 transition-colors"
+                className="flex items-center space-x-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 hover:text-white hover:border-white/20 transition-colors"
               >
                 <FaFilter />
                 <span>Filters</span>
@@ -533,7 +586,7 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   {/* Status Filter */}
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">
+                    <label className="block monty uppercase text-gray-300 text-sm font-medium mb-2">
                       Status
                     </label>
                     <select
@@ -561,7 +614,7 @@ export default function AdminDashboard() {
 
                   {/* Priority Filter */}
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">
+                    <label className="block monty uppercase text-gray-300 text-sm font-medium mb-2">
                       Priority
                     </label>
                     <select
@@ -589,7 +642,7 @@ export default function AdminDashboard() {
 
                   {/* Sort By */}
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">
+                    <label className="block monty uppercase text-gray-300 text-sm font-medium mb-2">
                       Sort By
                     </label>
                     <select
@@ -615,7 +668,7 @@ export default function AdminDashboard() {
 
                   {/* Sort Order */}
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">
+                    <label className="block monty uppercase text-gray-300 text-sm font-medium mb-2">
                       Order
                     </label>
                     <button
@@ -658,13 +711,16 @@ export default function AdminDashboard() {
                       {project.userInfo.company}
                     </p>
                   </div>
+
                   <div className="flex items-center space-x-2">
                     {getStatusIcon(project.status)}
                     <span
-                      className={`px-2 py-1 rounded-full text-sm font-medium border monty uppercase ${getPriorityColor(
+                      className={`px-2 py-1 rounded-full text-xs font-medium border monty uppercase ${getPriorityColor(
                         project.priority
                       )}`}
-                    ></span>
+                    >
+                      {project.priority}
+                    </span>
                   </div>
                 </div>
 
@@ -688,13 +744,13 @@ export default function AdminDashboard() {
 
                 {/* Tech Stack */}
                 <div className="mb-4">
-                  <div className="flex flex-wrap gap-1">
+                  <div className="flex flex-wrap gap-2">
                     {project.projectDetails.techStack
                       .slice(0, 3)
                       .map((tech) => (
                         <span
                           key={tech}
-                          className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-sm"
+                          className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-xl text-sm"
                         >
                           {tech}
                         </span>
@@ -710,7 +766,7 @@ export default function AdminDashboard() {
                 {/* Footer */}
                 <div className="flex items-center justify-between pt-4 border-t border-white/10">
                   <span className="text-sm text-gray-400">
-                    {formatDate(project.submittedAt)}
+                    {formatDate(project.createdAt)}
                   </span>
                   <div className="flex items-center space-x-2">
                     <button
@@ -771,6 +827,8 @@ export default function AdminDashboard() {
                     <h2 className="text-2xl font-semibold text-white mb-2">
                       {selectedProject.projectDetails.title}
                     </h2>
+
+                    {/* display priority and status */}
                     <div className="flex items-center space-x-4">
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium border monty uppercase ${getPriorityColor(
@@ -1045,7 +1103,7 @@ export default function AdminDashboard() {
                       <div>
                         <span className="text-gray-400">Submitted:</span>
                         <span className="text-white ml-2">
-                          {formatDate(selectedProject.submittedAt)}
+                          {formatDate(selectedProject.createdAt)}
                         </span>
                       </div>
                       <div>
