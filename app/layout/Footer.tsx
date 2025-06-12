@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React from "react";
 import {
   FaHeart,
@@ -61,7 +62,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden ">
+    <footer className="relative overflow-hidden mt-16">
       {/* Ambient background effects */}
       <div className="absolute top-20 left-10 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl animate-pulse"></div>
       <div
@@ -69,14 +70,14 @@ export default function Footer() {
         style={{ animationDelay: "1s" }}
       ></div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 relative z-10 ">
         {/* Main Footer Content */}
         <div className="py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             {/* Company Info */}
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h3 className="text-3xl font-bold !text-blue-500 mb-2 monty uppercase">
+                <h3 className="text-3xl font-bold !text-gray-100 mb-2 monty uppercase">
                   Andishi
                 </h3>
                 <p className="text-gray-400 leading-relaxed max-w-md">
@@ -120,6 +121,14 @@ export default function Footer() {
                   );
                 })}
               </div>
+
+              <Image
+                src="./logo.svg"
+                alt="Andishi Logo"
+                width={100}
+                height={50}
+                className="mt-8 absolute bottom-40 right-30"
+              />
             </div>
 
             {/* Footer Links */}

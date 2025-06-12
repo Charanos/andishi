@@ -70,8 +70,8 @@ export default function WhyAndishi() {
 
         <div className="relative">
           <img
-            className="w-full max-w-lg relative z-10"
-            src="/why-choose-andishi-illustration.svg"
+            className="w-full max-w-lg relative z-10 rounded-full shadow-lg"
+            src="/services 2.jpg"
             alt="Why Choose Andishi illustration"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-3xl scale-110 opacity-60"></div>

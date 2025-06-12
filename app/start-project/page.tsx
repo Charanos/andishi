@@ -296,7 +296,7 @@ export default function StartProjectForm() {
 
           // Redirect to thank you page after a short delay
           setTimeout(() => {
-            router.push("/thank-you");
+            router.push("/thank-you-start-project");
           }, 2000);
         } else {
           setSubmitStatus("error");
@@ -354,7 +354,7 @@ export default function StartProjectForm() {
         {/* Background gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-indigo-900/20"></div>
 
-        <div className="max-w-4xl mx-auto px-6 relative z-10 my-16">
+        <div className="max-w-6xl mx-auto px-6 relative z-10 my-16">
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-3xl lg:text-4xl font-medium text-white mb-4">
@@ -395,11 +395,11 @@ export default function StartProjectForm() {
           </div>
 
           {/* Form Container */}
-          <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl">
+          <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl px-8 py-10 shadow-2xl">
             {/* Step 1: User Info */}
             {currentStep === 1 && (
               <div className="space-y-6">
-                <h2 className="text-2xl font-semibold text-white mb-8 flex items-center">
+                <h2 className="text-2xl font-semibold text-white mb-8 flex items-center ">
                   <FaUser className="mr-3 text-blue-400" />
                   Tell us about yourself
                 </h2>
@@ -1200,14 +1200,14 @@ export default function StartProjectForm() {
                 className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${
                   currentStep === 1
                     ? "text-gray-500 cursor-not-allowed"
-                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                    : "text-gray-300 hover:text-white hover:bg-white/5  cursor-pointer"
                 }`}
               >
                 <FaArrowLeft className="text-[15.5px" />
                 <span>Previous</span>
               </button>
 
-              <div className="text-center text-[15.5px text-gray-400">
+              <div className="text-center text-[15.5px] text-gray-400">
                 Step {currentStep} of {steps.length}
               </div>
 
@@ -1218,8 +1218,8 @@ export default function StartProjectForm() {
                   disabled={!isStepValid()}
                   className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${
                     isStepValid()
-                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
-                      : "bg-gray-600 text-gray-400 cursor-not-allowed"
+                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer"
+                      : "bg-gray-500/20 text-gray-400 cursor-not-allowed"
                   }`}
                 >
                   <span>Next</span>

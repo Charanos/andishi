@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import { Nunito, Montserrat } from "next/font/google";
-import ScrollToTop from "./components/ScrollToTop";
 import PageTransition from "./components/PageTransition";
 import ClientMotionProvider from "././components/ClientMotionProvider";
 
@@ -41,7 +40,6 @@ export default function RootLayout({
         <div className="pointer-events-none fixed inset-0 -z-10 bg-[url('/bg-gradient-overlay.svg')] bg-center bg-cover opacity-75" />
 
         <ClientMotionProvider>
-          <ScrollToTop />
           <Navbar />
 
           {/* Smooth transition wrapper */}

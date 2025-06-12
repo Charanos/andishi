@@ -31,11 +31,13 @@ export default function HeroSection() {
               </span>
               <span className="text-green-400 font-medium">Live</span>
             </div>
+
             <div className="px-4 py-2 rounded-full backdrop-blur-md bg-white/5 border border-white/10">
               <span className="text-white font-medium">
                 10 teams building now
               </span>
             </div>
+
             <div className="px-4 py-2 rounded-full backdrop-blur-md bg-purple-500/20 border border-purple-400/30">
               <span className="text-purple-300 font-medium">
                 48hr special pricing
@@ -98,7 +100,7 @@ export default function HeroSection() {
             </Link>
 
             <Link
-              href="#services"
+              href="/tech-talent-pool"
               className="group px-8 py-4 backdrop-blur-md bg-white/5 border-2 border-blue-400/50 text-blue-300 rounded-full font-semibold hover:bg-blue-500/10 hover:border-blue-400 transition-all duration-300 hover:scale-105"
             >
               <span className="flex items-center justify-center space-x-2 uppercase tracking-wide">
@@ -165,7 +167,7 @@ export default function HeroSection() {
             {/* Image container */}
             <div className="relative p-8">
               <img
-                src="/hero-illustration.png"
+                src="/hero-illustration.jpg"
                 alt="Satellite network illustration representing global tech connectivity"
                 className="w-full max-w-md transform group-hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
               />
