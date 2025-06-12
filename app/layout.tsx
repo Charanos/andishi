@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
+import { Analytics } from "@vercel/analytics/next";
 import { Nunito, Montserrat } from "next/font/google";
 import PageTransition from "./components/PageTransition";
 import ClientMotionProvider from "././components/ClientMotionProvider";
@@ -44,7 +45,10 @@ export default function RootLayout({
 
           {/* Smooth transition wrapper */}
           <main className="pt-16">
-            <PageTransition>{children}</PageTransition>
+            <PageTransition>
+              {children}
+              <Analytics />
+            </PageTransition>
           </main>
 
           <Footer />
